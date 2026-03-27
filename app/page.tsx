@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const experience = [
@@ -70,6 +73,33 @@ const skillGroups = [
 ];
 
 export default function Home() {
+	const [showScrollTop, setShowScrollTop] = useState(false);
+
+	useEffect(() => {
+		const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("is-visible");
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+		);
+
+		revealTargets.forEach((target) => observer.observe(target));
+		return () => observer.disconnect();
+	}, []);
+
+	useEffect(() => {
+		const onScroll = () => setShowScrollTop(window.scrollY > 220);
+		onScroll();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
+	}, []);
+
 	return (
 		<main className="w-full pb-28 md:pb-36">
 			<div className="min-h-screen flex flex-col ">
@@ -104,17 +134,27 @@ export default function Home() {
 					<section className="w-full" id="top">
 						<div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-8 lg:gap-12">
 							<div className="md:flex md:flex-col md:justify-center">
-								<p className="m-0 text-[1.1rem] font-bold tracking-[0.16em] text-slate-600">Hi, my name is Istvan</p>
-								<h1 className="mb-6 mt-3 text-[clamp(2.4rem,5.6vw,5rem)] font-bold leading-[1.03] tracking-[-0.02em] text-slate-900 md:mb-5">
+								<p className="m-0 text-[1.4rem] font-bold tracking-[0.16em] text-slate-600 xl:pb-3">Hi, my name is Istvan</p>
+								<h1 className="xl:pb-8 mb-6 mt-3 text-[clamp(2.4rem,5.6vw,5rem)] font-bold leading-[1.03] tracking-[-0.02em] text-slate-900 md:mb-5">
 									Full Stack Software Engineer
 								</h1>
-								<p className="m-0 max-w-[68ch] text-[clamp(1.02rem,1.3vw,1.2rem)] text-slate-700">Based in Hungary</p>
-								<a
-									href="#contact"
-									className="mt-8 inline-block rounded-full bg-slate-900 px-7 py-4 text-center text-[0.95rem] font-semibold text-white no-underline transition-colors duration-150 hover:bg-slate-700 md:mt-7"
-								>
-									Contact Me
-								</a>
+								<p className="m-0 max-w-[68ch] text-[clamp(1.02rem,1.3vw,1.2rem)] text-slate-700">Scroll down to get to know me, or use the buttons to get in touch or view my CV.</p>
+								<div className="mt-8 xl:mt-20 flex flex-wrap gap-3 md:mt-7">
+									<a
+										href="#contact"
+										className="w-[15rem] rounded-full bg-slate-900 px-7 py-4 text-center text-[0.95rem] font-semibold text-white no-underline transition-colors duration-150 hover:bg-slate-700"
+									>
+										Contact Me
+									</a>
+									<a
+										href="/CV.pdf"
+										target="_blank"
+										rel="noreferrer"
+										className="w-[15rem] rounded-full border border-slate-600 bg-white px-7 py-4 text-center text-[0.95rem] font-semibold text-slate-900 no-underline transition-colors duration-150 hover:bg-slate-100"
+									>
+										Get My CV
+									</a>
+								</div>
 							</div>
 							<div className="flex justify-center md:items-center">
 								<Image
@@ -136,7 +176,11 @@ export default function Home() {
 
 			{/* PROFIL RÉSZ */}
 			<div className="mt-6 md:mt-12 xl:mt-16 mx-auto w-full max-w-6xl space-y-24 px-6 md:space-y-36">
-				<section id="profile" className="scroll-mt-24">
+				<section
+					id="profile"
+					data-reveal
+					className="scroll-mt-24 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<h2 className="mb-8 text-[clamp(1.7rem,2.8vw,2.3rem)] font-semibold tracking-[-0.02em] text-slate-900">Profile</h2>
 					<p className="max-w-4xl text-[1.05rem] leading-10 text-slate-700 [text-align:justify]">
 						Full Stack Software Engineer focused on scalable web systems and SaaS products. I cover the full lifecycle from architecture to deployment with a backend-oriented,
@@ -149,7 +193,10 @@ export default function Home() {
 
 
 				{/* TAPASZTALAT RÉSZ */}
-				<section className="scroll-mt-24 relative isolate py-16 md:py-24 border-b border-slate-300">
+				<section
+					data-reveal
+					className="scroll-mt-24 relative isolate py-16 md:py-24 border-b border-slate-300 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<div id="experience" className="absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-[linear-gradient(135deg,#0f172a_0%,#1f2a44_100%)]" />
 					<h2 className="mb-12 text-[clamp(1.7rem,2.8vw,2.3rem)] font-semibold tracking-[-0.02em] text-white">Experience</h2>
 					<div className="relative">
@@ -171,10 +218,15 @@ export default function Home() {
 						</div>
 					</div>
 				</section>
+				
 
 
 				{/* PROJEKTEK RÉSZ */}
-				<section id="projects" className="scroll-mt-24">
+				<section
+					id="projects"
+					data-reveal
+					className="scroll-mt-24 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<h2 className="mb-10 text-[clamp(1.7rem,2.8vw,2.3rem)] font-semibold tracking-[-0.02em] text-slate-900">Projects</h2>
 					<div className="grid gap-8 md:grid-cols-2 md:gap-10">
 						{projects.map((project, index) => (
@@ -192,7 +244,11 @@ export default function Home() {
 
 
 				{/* SKILL RÉSZ */}
-				<section id="skills" className="scroll-mt-24">
+				<section
+					id="skills"
+					data-reveal
+					className="scroll-mt-24 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<h2 className="mb-10 text-[clamp(1.7rem,2.8vw,2.3rem)] font-semibold tracking-[-0.02em] text-slate-900">Skills</h2>
 					<div className="grid gap-8 md:grid-cols-3 md:gap-10">
 						{skillGroups.map((group) => (
@@ -212,7 +268,11 @@ export default function Home() {
 
 
 				{/* TANULMÁNY RÉSZ */}
-				<section id="education" className="scroll-mt-24">
+				<section
+					id="education"
+					data-reveal
+					className="scroll-mt-24 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<h2 className="mb-10 text-[clamp(1.7rem,2.8vw,2.3rem)] font-semibold tracking-[-0.02em] text-slate-900">Education</h2>
 					<div className="grid gap-8 md:grid-cols-2 md:gap-10">
 						<article className="rounded-2xl border border-slate-300 bg-white p-8 shadow-[0_10px_26px_-22px_rgba(15,23,42,0.55)]">
@@ -231,7 +291,11 @@ export default function Home() {
 
 
 				{/* KONTAKT RÉSZ */}
-				<section id="contact" className="scroll-mt-24 pb-14 md:pb-20">
+				<section
+					id="contact"
+					data-reveal
+					className="scroll-mt-24 pb-14 md:pb-20 opacity-0 translate-y-8 transition-all duration-700 ease-out [&.is-visible]:translate-y-0 [&.is-visible]:opacity-100"
+				>
 					<div className="rounded-3xl border border-slate-300 bg-[linear-gradient(135deg,#0f172a_0%,#1f2a44_100%)] p-8 md:p-12 text-white">
 						<h2 className="text-[clamp(1.7rem,2.8vw,2.4rem)] font-semibold tracking-[-0.02em]">Let's Build Something Great Together</h2>
 						<p className="mt-5 max-w-2xl leading-8 text-slate-200">
@@ -254,6 +318,17 @@ export default function Home() {
 					</div>
 				</section>
 			</div>
+
+			<button
+				type="button"
+				onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+				aria-label="Back to top"
+				className={`fixed xl:w-16 xl:h-16 md:w-12 md:h-12 w-10 h-10 bottom-12 right-12 z-50 rounded-full border border-slate-600 bg-white/95 p-3 text-slate-900 shadow-[0_10px_24px_-12px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white ${
+					showScrollTop ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+				}`}
+			>
+				<span className="block text-xl leading-none">↑</span>
+			</button>
 		</main>
 	);
 }
