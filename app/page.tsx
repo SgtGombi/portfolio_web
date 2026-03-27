@@ -135,11 +135,11 @@ export default function Home() {
 						<div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-8 lg:gap-12">
 							<div className="md:flex md:flex-col md:justify-center">
 								<p className="m-0 text-[1.4rem] font-bold tracking-[0.16em] text-slate-600 xl:pb-3">Hi, my name is Istvan</p>
-								<h1 className="xl:pb-8 mb-6 mt-3 text-[clamp(2.4rem,5.6vw,5rem)] font-bold leading-[1.03] tracking-[-0.02em] text-slate-900 md:mb-5">
+								<h1 className="xl:pb-4 md:mb-3 mb-6 mt-3 text-[clamp(2.4rem,5.6vw,5rem)] font-bold leading-[1.03] tracking-[-0.02em] text-slate-900 md:mb-5">
 									Full Stack Software Engineer
 								</h1>
 								<p className="m-0 max-w-[68ch] text-[clamp(1.02rem,1.3vw,1.2rem)] text-slate-700">Scroll down to get to know me, or use the buttons to get in touch or view my CV.</p>
-								<div className="mt-8 xl:mt-20 flex flex-wrap gap-3 md:mt-7">
+								<div className="mt-8 xl:mt-12 flex flex-wrap gap-3 md:mt-5">
 									<a
 										href="#contact"
 										className="w-[15rem] rounded-full bg-slate-900 px-7 py-4 text-center text-[0.95rem] font-semibold text-white no-underline transition-colors duration-150 hover:bg-slate-700"
